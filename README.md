@@ -7,8 +7,8 @@ This project is for removing a VIP from a Citrix Netscaler ADC.
 <br>The script removes any vips you put in the file /group_vars/vips
 <br>It only needs the vip name and then it will fetch the lb name, services and servers
 using the nitro api.
-<br>It was wrriten to remove content-switched vips but it can remove lb vips 
-<br>also if you give the lb name and you skip the modules referring to cs(use --skip-tags).
+<br>It was wrriten to remove content-switched vips but it can remove lb vips also
+<br>if you give the lb name and you skip the modules referring to cs(use --skip-tags).
 
 ## Installation
 
