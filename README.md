@@ -16,5 +16,5 @@ ansible-playbook -i inventory  rmVIP.yml
 ## Credits
 
 This was written by Mihai Cziraki
-]]></content>
+</content>
 </snippet>
