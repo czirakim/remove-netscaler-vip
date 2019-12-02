@@ -12,12 +12,16 @@ using the nitro api.
 
 ## Installation
 
-It is written in Ansible (ansible 2.7.1)
+It is written in Ansible (ansible 2.7.1) The python version used is 2.7.12.
+<br> Also you need the Nitro API python SDK.
 
 ## Usage
 
 Like any ansible script you will run it like this:
-ansible-playbook -i inventory  rmVIP.yml
+<br>ansible-playbook -i inventory  rmVIP.yml
+
+If you want to remove an lb you will need to run it like this (at the fetchservices step replace lb_name with vip_name):
+<br>ansible-playbook -i inventory  rmVIP.yml --skip-tags "fetchcsconfig,rmcs"
 
 ## Credits
 
