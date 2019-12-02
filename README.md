@@ -1,5 +1,5 @@
 <snippet>
-  <content><![CDATA[
+  <content>
 # ${1:remove-netscaler-vip}
 
 This project is for removing a VIP from a Citrix Netscaler ADC.
