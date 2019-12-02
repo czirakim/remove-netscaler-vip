@@ -1,6 +1,7 @@
 <snippet>
-  <content><![CDATA[
- # ${1:Project Name}
+  <content><
+
+## remove-netscaler-vip
 
 This project is for removing a VIP from a Citrix Netscaler ADC.
 
@@ -16,5 +17,5 @@ ansible-playbook -i inventory  rmVIP.yml
 ## Credits
 
 This was written by Mihai Cziraki
-]]></content>
+</content>
 </snippet>
