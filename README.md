@@ -3,7 +3,7 @@
 
 ## Remove-netscaler-vip
 
-This project is for removing a VIP from a Citrix Netscaler ADC.
+This project is for removing a VIP from a Citrix Netscaler ADC.\n
 The script removes any vips you put in the file /group_vars/vips
 It only needs the vip name and then it will fetch the lb name, services and servers
 using the nitro api.
