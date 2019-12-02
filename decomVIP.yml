@@ -1,0 +1,94 @@
+---
+
+#  tasks:
+  - name: Fetch cs config
+    delegate_to: localhost
+    tags: fetchcsconfig
+    uri:
+      url: "https://{{ansible_host}}/nitro/v1/config/csvserver/{{vip_name}}"
+      method: GET
+      status_code: 200
+      validate_certs: no
+      return_content: yes
+      headers:
+        X-NITRO-USER: "{{ns_user}}"
+        X-NITRO-PASS: "{{ns_pass}}"
+    register: result
+  - set_fact: lb_name="{{ result.json.csvserver.0.lbvserver }}"
+
+  - name: Fetch services
+    delegate_to: localhost
+    tags: fetchservices
+    uri:
+      url: "https://{{ansible_host}}/nitro/v1/config/lbvserver_binding/{{lb_name}}"
+      method: GET
+      status_code: 200
+      validate_certs: no
+      return_content: yes
+      headers:
+        X-NITRO-USER: "{{ns_user}}"
+        X-NITRO-PASS: "{{ns_pass}}"
+    register: result
+
+  - set_fact:
+      services:
+        svc1: "{{ result.json.lbvserver_binding.0.lbvserver_service_binding.0.servicename }}"
+        svc2: "{{ result.json.lbvserver_binding.0.lbvserver_service_binding.1.servicename }}"
+
+
+  - name: Fetch server
+    delegate_to: localhost
+    tags: fetchservices
+    uri:
+      url: "https://{{ansible_host}}/nitro/v1/config/service/{{server_item.value}}"
+      method: GET
+      status_code: 200
+      validate_certs: no
+      return_content: yes
+      headers:
+        X-NITRO-USER: "{{ns_user}}"
+        X-NITRO-PASS: "{{ns_pass}}"
+    with_dict: "{{services}}"
+    loop_control:
+      loop_var: server_item
+    register: server_result
+
+  - set_fact:
+      servers:
+        srv1: "{{ server_result.results[1].json.service.0.servername }}"
+        srv2: "{{ server_result.results[0].json.service.0.servername }}"
+
+### remove cs,lb,server
+
+  - name: rm cs vserver
+    delegate_to: localhost
+    tags: rmcs
+    netscaler_cs_vserver:
+      nsip: '{{ansible_host}}'
+      nitro_user: '{{ns_user}}'
+      nitro_pass: '{{ns_pass}}'
+      state: absent
+      name:  '{{vip_name}}'
+
+  - name: rm lb vserver
+    delegate_to: localhost
+    tags: rmlb
+    netscaler_lb_vserver:
+      nsip: '{{ansible_host}}'
+      nitro_user: '{{ns_user}}'
+      nitro_pass: '{{ns_pass}}'
+      state: absent
+      name: '{{lb_name}}'
+
+  - name: rm server
+    delegate_to: localhost
+    tags: rmserver
+    netscaler_server:
+      nsip: '{{ansible_host}}'
+      nitro_user: '{{ns_user}}'
+      nitro_pass: '{{ns_pass}}'
+      state: absent
+      name: '{{srv_item.value}}'
+    with_dict: '{{servers}}'
+    loop_control:
+      loop_var: srv_item

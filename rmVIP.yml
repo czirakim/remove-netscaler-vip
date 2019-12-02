@@ -1,0 +1,12 @@
+- hosts: localVPX
+  connection: local
+  gather_facts: no
+  vars_files:
+    - group_vars/vips
+
+  tasks:
+  - name: rm vip
+    include: decomVIP.yml
+    vars:
+      vip_name: "{{ item }}"
+    with_items: "{{ vip_names }}"
