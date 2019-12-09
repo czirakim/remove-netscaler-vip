@@ -21,7 +21,7 @@ Like any ansible script you will run it like this:
 <br>ansible-playbook -i inventory  rmVIP.yml
 
 If you want to remove an lb you will need to run it like this (at the fetchservices step replace lb_name with vip_name):
-<br>ansible-playbook -i inventory  rmVIP.yml --skip-tags "rmcs"
+<br>ansible-playbook -i inventory  rmVIP.yml --skip-tags "fetchcsconfig,rmcs"
 
 ## Credits
 
